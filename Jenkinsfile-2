@@ -5,6 +5,17 @@ agent any
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
   stages {
+    stage('Checkout') {
+      steps {
+             checkout([$class: 'GitSCM',
+                  branches: [[name: '*/main']],
+                  userRemoteConfigs: [[
+                      url: 'https://github.com/andrey-v-molchanov/java-web-app.git'
+                  ]]
+              ])
+          }
+    }
+
     stage('Scan') {
       steps {
         withSonarQubeEnv(installationName: 'sonar-local') { 
